@@ -10,7 +10,6 @@ const Home = () => {
     }, [])
     return (
         <div>
-            <h1>Dish Report</h1>
             <DishesList dishes={dishes} />
         </div>
     )
