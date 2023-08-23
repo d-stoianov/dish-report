@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --main-bg-color: #F8F9FD;
+}
+
+body {
+    background-color: var(--main-bg-color);
+}
+
+table {
+    @apply shadow-lg bg-white border-collapse my-2;
+}
+
+thead tr {
+    @apply bg-blue-100 border font-bold text-left px-8 py-4;
+}
+
+tbody tr {
+    @apply hover:bg-gray-100;
+}
+
+td {
+    @apply border px-6 py-2;
+}

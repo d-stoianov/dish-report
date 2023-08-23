@@ -7,26 +7,37 @@ const DishesList = ({ dishes }) => { // TODO: rename -> DishOverviewItem
             {dishes.map(dish => {
                 const [isActive, setIsActive] = useState(false)
                 return (
-                    <li key={dish.id}>
+                    <li key={dish.id} className="my-4">
                         <div
-                            className="flex items-center gap-2 cursor-pointer" 
-                            onClick={() => setIsActive(!isActive)}
+                            className="flex items-center gap-2" 
                         >
                             <h1 
-                                className="text-xl font-bold">
+                                onClick={() => setIsActive(!isActive)}
+                                className="text-xl font-semibold cursor-pointer"
+                            >
                                 {dish.name}
                             </h1>
-                            {isActive ? <AiFillCaretDown /> : < AiFillCaretLeft />}
+                            <div>
+                                {isActive ? <AiFillCaretDown /> : < AiFillCaretLeft />}
+                            </div>
                         </div>
                         {isActive && 
-                            dish.primeCosts.map(el => (
-                                <table>
-                                    <tr className="text-md">
-                                        <td className="w-28">{el.place}</td>
-                                        <td className="w-28">{el.primeCost}%</td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>City</td>
+                                    <td>Price</td>
+                                </tr>
+                            </thead>
+                            {dish.primeCosts.map(el => (
+                                <tbody>
+                                    <tr>
+                                        <td>{el.place}</td>
+                                        <td>{el.primeCost} %</td>
                                     </tr>
-                                </table>
-                            ))
+                                </tbody>
+                            ))}
+                        </table>
                         }
                     </li>
                 )
