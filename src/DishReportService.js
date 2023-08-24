@@ -6,7 +6,15 @@ class DishReportService {
     async getDishOverview() {
         const res = await fetch(this.baseUrl + "/data.json")
         const data = await res.json()
-        return data.dishOverview
+
+        return data.dishes[0].dishOverview
+    }
+
+    async getDishDetails() {
+        const res = await fetch(this.baseUrl + "/data.json")
+        const data = await res.json()
+
+        return data.dishes[1].dishDetails
     }
 }
 
