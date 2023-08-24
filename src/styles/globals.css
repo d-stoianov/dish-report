@@ -11,14 +11,14 @@ body {
 }
 
 table {
-    @apply shadow-lg bg-white border-collapse my-2;
+    @apply shadow-lg bg-white border-collapse my-2 w-full md:min-w-[500px];
 }
 
 thead tr {
     @apply bg-blue-100 border font-bold text-left px-8 py-4;
 }
 
-tbody tr {
+tbody {
     @apply hover:bg-gray-100;
 }
 
