@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { Route, createRoutesFromElements, RouterProvider, createHashRouter } from "react-router-dom"
-import DishReportService from "../DishReportService"
-import DishesList from "./DishesList"
-import DishDetails from "./DishDetails"
+import DishReportService from "@/services/DishReportService"
+import DishesOveviewList from "@/pages/DishesOveviewList"
+import DishDetails from "@/pages/DishDetails"
 
-const Home = () => {
+const App = () => {
     const service = new DishReportService
     const [dishesOverview, setDishesOverview] = useState([])
     const [dishesDetails, setDishesDetails] = useState([])
@@ -18,7 +18,7 @@ const Home = () => {
             <Route path="/">
                 <Route
                     index
-                    element={<DishesList dishesOverview={dishesOverview} />} 
+                    element={<DishesOveviewList dishesOverview={dishesOverview} />} 
                 />
                 <Route 
                     path=":id"
@@ -33,4 +33,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default App

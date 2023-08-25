@@ -1,5 +1,5 @@
 import React from "react"
-import Accordion from "./Accordion"
+import Accordion from "@/components/Accordion"
 import { Link, useParams } from "react-router-dom"
 import { BiSolidChevronLeft } from "react-icons/bi"
 

@@ -1,8 +1,8 @@
-import React, { useState } from "react"
-import Accordion from "./Accordion"
+import React from "react"
+import Accordion from "@/components/Accordion"
 import { Link } from "react-router-dom"
 
-const DishesList = ({ dishesOverview }) => { // TODO: rename -> DishOverviewItem
+const DishesOveviewList = ({ dishesOverview }) => {
 
     return (
         <ul className="m-4">
@@ -37,4 +37,4 @@ const DishesList = ({ dishesOverview }) => { // TODO: rename -> DishOverviewItem
     )
 }
 
-export default DishesList
+export default DishesOveviewList

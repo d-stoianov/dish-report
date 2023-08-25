@@ -7,7 +7,13 @@ module.exports = {
         bundle: path.resolve(__dirname, "src/index.js"),
     },
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx'],
+        alias: {
+            "@/components": path.resolve(__dirname, "src/components"),
+            "@/pages": path.resolve(__dirname, "src/pages"),
+            "@/styles": path.resolve(__dirname, "src/styles"),
+            "@/services": path.resolve(__dirname, "src/services"),
+        }
     },
     output: {
         path: path.resolve(__dirname, "dist"),
