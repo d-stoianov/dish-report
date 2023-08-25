@@ -1,7 +1,7 @@
 import React from "react"
 import Accordion from "./Accordion"
 import { Link, useParams } from "react-router-dom"
-import { TiArrowBackOutline } from "react-icons/ti"
+import { BiSolidChevronLeft } from "react-icons/bi"
 
 const DishDetails = ({ dishesDetails }) => {
     const { id } = useParams()
@@ -17,12 +17,12 @@ const DishDetails = ({ dishesDetails }) => {
     return (
         <ul className="m-4">
             <div className="flex justify-center items-center gap-3">
+                <Link to="/">
+                    <BiSolidChevronLeft />
+                </Link>
                 <h1 className="text-xl font-semibold">
                     {title}
                 </h1>
-                <Link to="/">
-                    <TiArrowBackOutline />
-                </Link>
             </div>
             {   
                 ingredients && ingredients.map(ingredient => {
