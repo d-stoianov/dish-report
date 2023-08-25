@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import Accordion from "./Accordion"
+import { Link } from "react-router-dom"
 
 const DishesList = ({ dishesOverview }) => { // TODO: rename -> DishOverviewItem
 
@@ -8,6 +9,7 @@ const DishesList = ({ dishesOverview }) => { // TODO: rename -> DishOverviewItem
             {dishesOverview.map(dishOverview => {
                 return (
                         <Accordion title={dishOverview.name} key={dishOverview.id}>
+                            <Link to={dishOverview.id.toString()}>
                                 <table
                                     className="cursor-pointer"
                                 >
@@ -26,6 +28,7 @@ const DishesList = ({ dishesOverview }) => { // TODO: rename -> DishOverviewItem
                                         ))}
                                     </tbody>
                                 </table>
+                            </Link>
                         </Accordion>
                     )}
                 )

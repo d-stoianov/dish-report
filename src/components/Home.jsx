@@ -20,6 +20,10 @@ const Home = () => {
                     index
                     element={<DishesList dishesOverview={dishesOverview} />} 
                 />
+                <Route 
+                    path=":id"
+                    element={<DishDetails dishesDetails={dishesDetails} />}
+                />
             </Route>
         )
     )
