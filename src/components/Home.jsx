@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
+import { Route, createRoutesFromElements, RouterProvider, createHashRouter } from "react-router-dom"
 import DishReportService from "../DishReportService"
 import DishesList from "./DishesList"
+import DishDetails from "./DishDetails"
 
 const Home = () => {
     const service = new DishReportService
@@ -10,10 +12,20 @@ const Home = () => {
         service.getDishOverview().then(data => setDishesOverview(data))
         service.getDishDetails().then(data => setDishesDetails(data))
     }, [])
+
+    const router = createHashRouter(
+        createRoutesFromElements(
+            <Route path="/">
+                <Route
+                    index
+                    element={<DishesList dishesOverview={dishesOverview} />} 
+                />
+            </Route>
+        )
+    )
+
     return (
-        <div>
-            <DishesList dishesOverview={dishesOverview} dishesDetails={dishesDetails} />
-        </div>
+        <RouterProvider router={router} />
     )
 }
 
