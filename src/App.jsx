@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react"
-import { Route, createRoutesFromElements, RouterProvider, createHashRouter } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
 import DishReportService from "@/services/DishReportService"
 import DishesOveviewList from "@/pages/DishesOveviewList"
 import DishDetails from "@/pages/DishDetails"
 import Login from "@/pages/Login"
 import Logout from "@/components/Logout"
 import ProtectedRoute from "@/utils/ProtectedRoute"
+import { AnimatePresence } from "framer-motion"
 
 const App = () => {
     const service = new DishReportService
@@ -13,6 +14,8 @@ const App = () => {
     const [dishesDetails, setDishesDetails] = useState([])
 
     const [user, setUser] = useState(null)
+
+    const location = useLocation()
 
     const handleLogin = (userData) => {
         setUser(userData)
@@ -27,16 +30,11 @@ const App = () => {
         service.getDishDetails().then(data => setDishesDetails(data))
     }, [user])
 
-    const router = createHashRouter(
-        createRoutesFromElements(
-            <Route path="/">
-                <Route
-                    index
-                    path="/"
-                    element={<Login handleUserLogin={handleLogin} />} 
-                />
-
-                <Route path="/dish">
+    return (
+        <>  
+            <AnimatePresence mode="wait">
+                <Routes location={location} key={location.pathname}>
+                    <Route index element={<Login handleUserLogin={handleLogin} />} />
                     <Route
                         path="/dish"
                         element={
@@ -46,9 +44,8 @@ const App = () => {
                             </ProtectedRoute>
                         } 
                     />
-
                     <Route 
-                        path=":id"
+                        path="/dish/:id"
                         element={
                             <ProtectedRoute redirectPath="/" user={user}>
                                 <Logout handleUserLogout={handleLogout} />
@@ -56,14 +53,8 @@ const App = () => {
                             </ProtectedRoute>
                         }
                     />
-                </Route>
-            </Route>
-        )
-    )
-
-    return (
-        <>  
-            <RouterProvider router={router} />
+                </Routes>
+            </AnimatePresence>
         </>
     )
 }

@@ -1,11 +1,18 @@
 import React from "react"
 import Accordion from "@/components/Accordion"
 import { Link } from "react-router-dom"
+import { motion } from "framer-motion"
 
 const DishesOveviewList = ({ dishesOverview }) => {
 
     return (
-        <ul className="m-4">
+        <motion.div 
+            className="m-4"
+
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+        >
             {dishesOverview.map(dishOverview => {
                 return (
                         <Accordion title={dishOverview.name} key={dishOverview.id}>
@@ -33,7 +40,7 @@ const DishesOveviewList = ({ dishesOverview }) => {
                     )}
                 )
             }
-        </ul>
+        </motion.div>
     )
 }
 

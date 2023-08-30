@@ -2,6 +2,7 @@ import React from "react"
 import Accordion from "@/components/Accordion"
 import { Link, useParams } from "react-router-dom"
 import { BiSolidChevronLeft } from "react-icons/bi"
+import { motion } from "framer-motion"
 
 const DishDetails = ({ dishesDetails }) => {
     const { id } = useParams()
@@ -15,7 +16,13 @@ const DishDetails = ({ dishesDetails }) => {
     }).ingredients
 
     return (
-        <ul className="m-4">
+        <motion.div 
+            className="m-4"
+
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+        >
             <div className="flex justify-center items-center gap-3">
                 <Link to="/dish">
                     <BiSolidChevronLeft />
@@ -51,7 +58,7 @@ const DishDetails = ({ dishesDetails }) => {
                     )
                 })
             }
-        </ul>
+        </motion.div>
     )
 }
 

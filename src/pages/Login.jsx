@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import DishReportService from "@/services/DishReportService"
 import { useNavigate } from "react-router-dom"
+import { motion } from "framer-motion"
 
 const Login = ({ handleUserLogin }) => {
     const service = new DishReportService()
@@ -22,7 +23,13 @@ const Login = ({ handleUserLogin }) => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center px-8 py-32 md:p-0 md:h-screen">
+        <motion.div 
+            className="flex flex-col items-center justify-center px-8 py-32 md:p-0 md:h-screen"
+            
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+        >
             <div className="w-full md:w-[50%] bg-white rounded-lg shadow">
                 <div className="p-8 space-y-6">
                     <h1 className="text-xl font-bold text-gray-900">
@@ -72,7 +79,7 @@ const Login = ({ handleUserLogin }) => {
                     </form>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 
