@@ -17,7 +17,7 @@ const DishDetails = ({ dishesDetails }) => {
     return (
         <ul className="m-4">
             <div className="flex justify-center items-center gap-3">
-                <Link to="/">
+                <Link to="/dish">
                     <BiSolidChevronLeft />
                 </Link>
                 <h1 className="text-xl font-semibold">
