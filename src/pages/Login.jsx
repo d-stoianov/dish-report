@@ -2,9 +2,11 @@ import React, { useState } from "react"
 import DishReportService from "@/services/DishReportService"
 import { motion } from "framer-motion"
 import Loader from "@/components/Loader"
+import { KeyService } from "../services/KeyService"
 
 const Login = ({ handleUserLogin }) => {
     const service = new DishReportService()
+    const keyService = new KeyService()
     const [username, setUsername] = useState(null)
     const [password, setPassword] = useState(null)
 
@@ -16,15 +18,15 @@ const Login = ({ handleUserLogin }) => {
         e.preventDefault()
         setIsLoading(true)
 
-        const res = await service.login(username, password)
-        if (res.response.ok) {
-            localStorage.setItem("key", res.key)
+        const keyCollection = await service.login(username, password)
+        if (keyCollection.allErrors()) {
+            setError(true)
+        } else {
+            keyService.saveKeys(keyCollection)
             handleUserLogin({
                 username: username,
                 password: password
             })
-        } else {
-            setError(true)
         }
 
         setIsLoading(false)

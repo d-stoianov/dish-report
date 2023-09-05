@@ -1,6 +1,12 @@
 [
     {
         "baseUrl": "https://cooper-burger-cloud.iiko.it/resto/api",
-        "groupFieldName": "RestorauntGroup"
+        "groupFieldName": "RestorauntGroup",
+        "department": "Cooper"
+    },
+    {
+        "baseUrl": "https://cooper-burger-cloud.iiko.it/resto/api",
+        "groupFieldName": "RestorauntGroup",
+        "department": "Cooper2"
     }
 ]

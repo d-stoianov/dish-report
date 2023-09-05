@@ -1,23 +1,20 @@
 import React, { useState } from "react"
 import DishReportService from "@/services/DishReportService"
-import { useNavigate } from "react-router-dom"
+import { KeyService } from "@/services/KeyService"
 
 const Nav = ({ handleUserLogout }) => {
     const service = new DishReportService()
-    const navigate = useNavigate()
+    const keyService = new KeyService()
     
     const [isLoading, setIsLoading] = useState(false)
 
     const handleLogout = async () => {
         setIsLoading(true)
 
-        const key = localStorage.getItem("key")
-        const res = await service.logout(key)
-        if (res.ok) {
+        const keys = keyService.loadKeys()
+        if (await service.logout(keys)) {
             setIsLoading(false)
-            localStorage.removeItem("key")
             handleUserLogout()
-            navigate("/")
         }
     }
 

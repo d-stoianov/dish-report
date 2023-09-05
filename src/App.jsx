@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import DishReportService from "@/services/DishReportService"
+import { KeyService } from "@/services/KeyService"
 import DishesOveviewList from "@/pages/DishesOveviewList"
 import DishDetails from "@/pages/DishDetails"
 import Login from "@/pages/Login"
@@ -10,6 +11,7 @@ import { AnimatePresence } from "framer-motion"
 
 const App = () => {
     const service = new DishReportService
+    const keyService = new KeyService()
     const [dishesOverview, setDishesOverview] = useState([])
     // const [dishesDetails, setDishesDetails] = useState([])
 
@@ -25,21 +27,27 @@ const App = () => {
     }
 
     const handleLogout = () => {
+        keyService.clearKeys()
         setUser(null)
+        navigate("/")
     }
 
     useEffect(() => {
-        const key = localStorage.getItem("key")
-
-        if (user || key) {
+        const keys = keyService.loadKeys()
+        if (user || !keys.allErrors()) {
             navigate("/dish")
             setIsLoading(true)
-            service.getDishOverview(key)
+            service.getDishOverview(keys)
             .then(overviewData => {
-                setDishesOverview(overviewData)
+                if (overviewData.hasData()) {
+                    setDishesOverview(overviewData.items)
+                } else {
+                    handleLogout()
+                }
             })
             .catch(error => {
                 console.log(error)
+                handleLogout()
             })
             .finally(() => {
                 setIsLoading(false)
