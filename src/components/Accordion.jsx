@@ -5,7 +5,7 @@ const Accordion = ({title, children, defaultActive}) => {
     const [isActive, setIsActive] = useState(defaultActive ?? true)
     return (
         <li className="my-4 flex justify-center">
-            <div className="w-full md:w-[32rem]">
+            <div className="w-full md:w-[48rem]">
                 <div className="flex items-center gap-2">
                     <h1 
                         onClick={() => setIsActive(!isActive)}
