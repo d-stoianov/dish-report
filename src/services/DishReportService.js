@@ -1,44 +1,85 @@
+import config from "@/services/service.config.json"
+import sha1 from "sha1"
+
 class DishReportService {
-    constructor () {
-        this.baseUrl = "https://d-stoianov.github.io/dish-report-stage"
-    }
-
     async login(username, password) {
-        // do some fetch with username and password parameters
+        const baseUrl = config[0].baseUrl
+        try {
+            const response = await fetch(`${baseUrl}/auth?login=${username}&pass=${sha1(password)}`)
 
-        const response =  {
-            "name": "Odesa",
-            "serviceUrl": "http://blablasomeurl.com",
-            "httpCode": 200,
-            "message": "Success"
+            const key = await response.text()
+            return {response, key}
+        } catch (error) {
+            throw error
         }
-        return response
     }
 
-    async logout() {
-        // do some fetch
+    async logout(key) {
+        const baseUrl = config[0].baseUrl
 
-        const response =  {
-            "name": "Odesa",
-            "serviceUrl": "http://blablasomeurl.com",
-            "httpCode": 200,
-            "message": "Success"
+        try {
+            const response = await fetch(`${baseUrl}/logout?key=${key}`)
+
+            return response
+        } catch (error) {
+            throw error
         }
-        return response
     }
 
-    async getDishOverview() {
-        const res = await fetch(this.baseUrl + "/data.json")
-        const data = await res.json()
+    async getDishOverview(key) {
+        const baseUrl = config[0].baseUrl
 
-        return data.dishes[0].dishOverview
+        const body = {
+            "reportType": "SALES",
+            "groupByColFields": [
+                "DishName",
+                "DishId",
+                "RestorauntGroup" // groupFieldName, optional
+            ],
+            "aggregateFields": [
+                "ProductCostBase.Percent"
+            ],
+            "filters": {
+                "OpenDate.Typed": {
+                    "filterType": "DateRange",
+                    "periodType": "LAST_WEEK",
+                    "from": "2023-09-02", // 7 days ago
+                }
+            }
+        }
+
+        const response = await fetch(`${baseUrl}/v2/reports/olap/?key=${key}`, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+
+        const data = await response.json()
+        console.log(data.data)
+        const dishes = data.data.sort((a, b) => {
+            return b["ProductCostBase.Percent"] - a["ProductCostBase.Percent"] // sort descending
+        }).slice(0, 10) // get first 10 elements
+
+        return dishes
     }
 
-    async getDishDetails() {
-        const res = await fetch(this.baseUrl + "/data.json")
-        const data = await res.json()
+    async getDepartments(key) {
+        const departments = []
 
-        return data.dishes[1].dishDetails
+        const baseUrl = config[0].baseUrl
+        const response = await fetch(`${baseUrl}/corporation/departments/?key=${key}`)
+        
+        const text = await response.text()
+        
+        const doc = new DOMParser().parseFromString(text, "text/xml")
+        const department = doc.evaluate("/corporateItemDtoes/corporateItemDto[1]/name/text()", doc).iterateNext().data
+
+        departments.push(department)
+
+        return departments
     }
 }
 
