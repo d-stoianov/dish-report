@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import DishReportService from "@/services/DishReportService"
-import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 
 const Login = ({ handleUserLogin }) => {
@@ -8,17 +7,19 @@ const Login = ({ handleUserLogin }) => {
     const [username, setUsername] = useState(null)
     const [password, setPassword] = useState(null)
 
-    const navigate = useNavigate()
+    const [error, setError] = useState(false)
 
     const handleLogin = async (e) => {
         e.preventDefault()
         const res = await service.login(username, password)
-        if (res.httpCode === 200) {
+        if (res.response.ok) {
+            localStorage.setItem("key", res.key)
             handleUserLogin({
                 username: username,
                 password: password
             })
-            navigate("/dish")
+        } else {
+            setError(true)
         }
     }
 
@@ -35,6 +36,11 @@ const Login = ({ handleUserLogin }) => {
                     <h1 className="text-xl font-bold text-gray-900">
                         Sign in
                     </h1>
+                    {error &&
+                        <h3 className="text-red-500">
+                            Failed to Sign in
+                        </h3>
+                    }
                     <form 
                         onSubmit={handleLogin}
                         className="space-y-6"

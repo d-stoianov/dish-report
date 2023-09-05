@@ -7,8 +7,10 @@ const Nav = ({ handleUserLogout }) => {
     const navigate = useNavigate()
 
     const handleLogout = async () => {
-        const res = await service.logout()
-        if (res.httpCode === 200) {
+        const key = localStorage.getItem("key")
+        const res = await service.logout(key)
+        if (res.ok) {
+            localStorage.removeItem("key")
             handleUserLogout()
             navigate("/")
         }

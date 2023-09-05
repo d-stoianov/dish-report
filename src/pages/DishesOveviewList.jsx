@@ -3,7 +3,7 @@ import Accordion from "@/components/Accordion"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 
-const DishesOveviewList = ({ dishesOverview }) => {
+const DishesOveviewList = ({ departments, dishesOverview }) => {
 
     return (
         <motion.div 
@@ -13,33 +13,28 @@ const DishesOveviewList = ({ dishesOverview }) => {
             animate={{opacity: 1}}
             exit={{opacity: 0}}
         >
-            {dishesOverview.map(dishOverview => {
-                return (
-                        <Accordion title={dishOverview.name} key={dishOverview.id}>
-                            <Link to={dishOverview.id.toString()}>
-                                <table
-                                    className="cursor-pointer"
-                                >
-                                    <thead>
-                                        <tr>
-                                            <td>City</td>
-                                            <td>Price</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {dishOverview.primeCosts.map(el => (
-                                            <tr key={el.place}>
-                                                <td>{el.place}</td>
-                                                <td>{el.primeCost} %</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </Link>
-                        </Accordion>
-                    )}
-                )
-            }
+            {departments.map(department => (
+                <Accordion title={`${department} - ${dishesOverview[0]?.RestorauntGroup}`} key={"1"}>
+                    <table
+                        className="cursor-pointer"
+                    >
+                        <thead>
+                            <tr>
+                                <td>Dish</td>
+                                <td>Prime Cost</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {dishesOverview.map(dish => (
+                                <tr key={dish.DishId}>
+                                    <td>{dish.DishName}</td>
+                                    <td>{(dish["ProductCostBase.Percent"] * 100).toFixed(4).replace(/\.?0*$/, '')} %</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Accordion>
+            ))}
         </motion.div>
     )
 }

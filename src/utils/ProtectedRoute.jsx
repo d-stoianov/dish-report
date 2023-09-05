@@ -1,8 +1,9 @@
 import React from "react"
 import { Navigate } from "react-router-dom"
 
-const ProtectedRoute = ({ user, redirectPath, children }) => {
-    if (!user) {
+const ProtectedRoute = ({ redirectPath, children }) => {
+    const key = localStorage.getItem("key")
+    if (!key) {
         return <Navigate to={redirectPath} replace />
     }
 
