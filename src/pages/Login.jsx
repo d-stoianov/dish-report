@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import DishReportService from "@/services/DishReportService"
 import { motion } from "framer-motion"
+import Loader from "@/components/Loader"
 
 const Login = ({ handleUserLogin }) => {
     const service = new DishReportService()
@@ -9,8 +10,12 @@ const Login = ({ handleUserLogin }) => {
 
     const [error, setError] = useState(false)
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const handleLogin = async (e) => {
         e.preventDefault()
+        setIsLoading(true)
+
         const res = await service.login(username, password)
         if (res.response.ok) {
             localStorage.setItem("key", res.key)
@@ -21,6 +26,8 @@ const Login = ({ handleUserLogin }) => {
         } else {
             setError(true)
         }
+
+        setIsLoading(false)
     }
 
     return (
@@ -76,12 +83,15 @@ const Login = ({ handleUserLogin }) => {
                                 className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
                             />
                         </div>
-                        <button 
-                            type="submit" 
-                            className="w-full text-black bg-primary-600 text-sm px-5 py-2.5 text-center"
-                        >
-                            Sign in
-                        </button>
+                        {isLoading ? <Loader /> : 
+                            <button 
+                                type="submit" 
+                                className="w-full text-black bg-primary-600 text-sm px-5 py-2.5 text-center"
+                            >
+                                Sign in
+                            </button>
+                        }
+
                     </form>
                 </div>
             </div>

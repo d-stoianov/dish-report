@@ -19,6 +19,8 @@ const App = () => {
     const location = useLocation()
     const navigate = useNavigate()
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const handleLogin = (userData) => {
         setUser(userData)
     }
@@ -31,9 +33,22 @@ const App = () => {
         const key = localStorage.getItem("key")
 
         if (user || key) {
-            service.getDishOverview(key).then(data => setDishesOverview(data))
-            service.getDepartments(key).then(data => setDepartments(data))
             navigate("/dish")
+            setIsLoading(true)
+            Promise.all([
+                service.getDishOverview(key),
+                service.getDepartments(key)
+            ])
+            .then(([overviewData, departmentsData]) => {
+                setDishesOverview(overviewData);
+                setDepartments(departmentsData);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
         }
     }, [user])
 
@@ -47,7 +62,7 @@ const App = () => {
                         element={
                             <ProtectedRoute redirectPath="/">
                                 <Logout handleUserLogout={handleLogout} />
-                                <DishesOveviewList departments={departments} dishesOverview={dishesOverview} />
+                                <DishesOveviewList isLoading={isLoading} departments={departments} dishesOverview={dishesOverview} />
                             </ProtectedRoute>
                         } 
                     />

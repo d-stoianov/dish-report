@@ -25,3 +25,8 @@ tbody {
 td {
     @apply border px-6 py-2;
 }
+
+button:disabled {
+    cursor: not-allowed;
+    pointer-events: all !important;
+}

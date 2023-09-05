@@ -1,9 +1,10 @@
 import React from "react"
 import Accordion from "@/components/Accordion"
 import { Link } from "react-router-dom"
+import Loader from "@/components/Loader"
 import { motion } from "framer-motion"
 
-const DishesOveviewList = ({ departments, dishesOverview }) => {
+const DishesOveviewList = ({ isLoading, departments, dishesOverview }) => {
 
     return (
         <motion.div 
@@ -13,7 +14,7 @@ const DishesOveviewList = ({ departments, dishesOverview }) => {
             animate={{opacity: 1}}
             exit={{opacity: 0}}
         >
-            {departments.map(department => (
+            {isLoading ? <Loader/> : departments.map(department => (
                 <Accordion title={`${department} - ${dishesOverview[0]?.RestorauntGroup}`} key={"1"}>
                     <table
                         className="cursor-pointer"
