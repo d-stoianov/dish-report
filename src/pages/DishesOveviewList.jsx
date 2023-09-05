@@ -4,18 +4,18 @@ import { Link } from "react-router-dom"
 import Loader from "@/components/Loader"
 import { motion } from "framer-motion"
 
-const DishesOveviewList = ({ isLoading, departments, dishesOverview }) => {
+const DishesOveviewList = ({ isLoading, dishesOverview }) => {
 
     return (
         <motion.div 
-            className="p-4 flex w-full justify-center"
+            className="p-4 flex flex-col w-full justify-center items-center gap-4"
 
             initial={{opacity: 0}}
             animate={{opacity: 1}}
             exit={{opacity: 0}}
         >
-            {isLoading ? <Loader/> : departments.map(department => (
-                <Accordion title={`${department} - ${dishesOverview[0]?.RestorauntGroup}`} key={"1"}>
+            {isLoading ? <Loader/> : dishesOverview.map((el, idx) => (
+                <Accordion title={`${el.department} - ${el.group}`} key={idx}>
                     <table
                         className="cursor-pointer"
                     >
@@ -26,10 +26,10 @@ const DishesOveviewList = ({ isLoading, departments, dishesOverview }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {dishesOverview.map(dish => (
-                                <tr key={dish.DishId}>
-                                    <td>{dish.DishName}</td>
-                                    <td>{(dish["ProductCostBase.Percent"] * 100).toFixed(4).replace(/\.?0*$/, '')} %</td>
+                            {el.dishes.map(dish => (
+                                <tr key={dish.id}>
+                                    <td>{dish.name}</td>
+                                    <td>{(dish.cost * 100).toFixed(4).replace(/\.?0*$/, '')} %</td>
                                 </tr>
                             ))}
                         </tbody>

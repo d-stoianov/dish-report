@@ -10,7 +10,6 @@ import { AnimatePresence } from "framer-motion"
 
 const App = () => {
     const service = new DishReportService
-    const [departments, setDepartments] = useState([])
     const [dishesOverview, setDishesOverview] = useState([])
     // const [dishesDetails, setDishesDetails] = useState([])
 
@@ -35,13 +34,9 @@ const App = () => {
         if (user || key) {
             navigate("/dish")
             setIsLoading(true)
-            Promise.all([
-                service.getDishOverview(key),
-                service.getDepartments(key)
-            ])
-            .then(([overviewData, departmentsData]) => {
-                setDishesOverview(overviewData);
-                setDepartments(departmentsData);
+            service.getDishOverview(key)
+            .then(overviewData => {
+                setDishesOverview(overviewData)
             })
             .catch(error => {
                 console.log(error)
@@ -62,7 +57,7 @@ const App = () => {
                         element={
                             <ProtectedRoute redirectPath="/">
                                 <Logout handleUserLogout={handleLogout} />
-                                <DishesOveviewList isLoading={isLoading} departments={departments} dishesOverview={dishesOverview} />
+                                <DishesOveviewList isLoading={isLoading} dishesOverview={dishesOverview} />
                             </ProtectedRoute>
                         } 
                     />
