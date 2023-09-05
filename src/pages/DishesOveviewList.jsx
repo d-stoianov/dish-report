@@ -8,7 +8,7 @@ const DishesOveviewList = ({ isLoading, departments, dishesOverview }) => {
 
     return (
         <motion.div 
-            className="m-4"
+            className="p-4 flex w-full justify-center"
 
             initial={{opacity: 0}}
             animate={{opacity: 1}}

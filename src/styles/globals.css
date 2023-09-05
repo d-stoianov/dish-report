@@ -11,7 +11,7 @@ body {
 }
 
 table {
-    @apply shadow-lg bg-white border-collapse my-2 w-full md:w-[48rem];
+    @apply shadow-lg bg-white border-collapse my-2 w-full;
 }
 
 thead tr {

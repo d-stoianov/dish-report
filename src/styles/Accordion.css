@@ -1,0 +1,27 @@
+.accordion {
+    @apply flex flex-col justify-center w-full md:w-[70%];
+}
+
+.accordion-header {
+    @apply flex items-center gap-2;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.accordion.active .accordion-content {
+    max-height: max-content;
+}
+
+.arrow-icon {
+    transform: rotate(90deg);
+    transition: transform 0.3s linear;
+}
+
+.arrow-icon.active {
+    transform: rotate(0deg);
+    transition: transform 0.3s linear;
+}
