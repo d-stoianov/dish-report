@@ -13,7 +13,13 @@ const App = () => {
     const service = new DishReportService
     const keyService = new KeyService()
     const [dishesOverview, setDishesOverview] = useState([])
-    // const [dishesDetails, setDishesDetails] = useState([])
+
+    const [selectedDish, setSelectedDish] = useState(null)
+
+    function handleRowClick(id, department) {
+        setSelectedDish(dishesOverview.getDishById(id))
+        navigate(`/dish/${department}/${id}`)
+    }
 
     const [user, setUser] = useState(null)
 
@@ -40,7 +46,7 @@ const App = () => {
             service.getDishOverview(keys)
             .then(overviewData => {
                 if (overviewData.hasData()) {
-                    setDishesOverview(overviewData.items)
+                    setDishesOverview(overviewData)
                 } else {
                     handleLogout()
                 }
@@ -65,19 +71,19 @@ const App = () => {
                         element={
                             <ProtectedRoute redirectPath="/">
                                 <Logout handleUserLogout={handleLogout} />
-                                <DishesOveviewList isLoading={isLoading} dishesOverview={dishesOverview} />
+                                <DishesOveviewList handleRowClick={handleRowClick} isLoading={isLoading} dishesOverview={dishesOverview.items} />
                             </ProtectedRoute>
                         } 
                     />
-                    {/* <Route 
-                        path="/dish/:id"
+                    <Route 
+                        path="/dish/:department/:id"
                         element={
                             <ProtectedRoute redirectPath="/">
                                 <Logout handleUserLogout={handleLogout} />
-                                <DishDetails dishesDetails={dishesDetails} />
+                                <DishDetails selectedDish={selectedDish} />
                             </ProtectedRoute>
                         }
-                    /> */}
+                    />
                 </Routes>
             </AnimatePresence>
         </>

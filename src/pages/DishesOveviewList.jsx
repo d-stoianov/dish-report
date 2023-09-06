@@ -1,10 +1,10 @@
 import React from "react"
 import Accordion from "@/components/Accordion"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Loader from "@/components/Loader"
 import { motion } from "framer-motion"
 
-const DishesOveviewList = ({ isLoading, dishesOverview }) => {
+const DishesOveviewList = ({ isLoading, dishesOverview, handleRowClick }) => {
 
     return (
         <motion.div 
@@ -14,7 +14,7 @@ const DishesOveviewList = ({ isLoading, dishesOverview }) => {
             animate={{opacity: 1}}
             exit={{opacity: 0}}
         >
-            {isLoading ? <Loader/> : dishesOverview.map((el, idx) => (
+            {isLoading ? <Loader/> : dishesOverview?.map((el, idx) => (
                 <Accordion title={`${el.department} - ${el.group}`} key={idx}>
                     <table
                         className="cursor-pointer"
@@ -27,7 +27,7 @@ const DishesOveviewList = ({ isLoading, dishesOverview }) => {
                         </thead>
                         <tbody>
                             {el.dishes.map(dish => (
-                                <tr key={dish.id}>
+                                <tr key={dish.id} onClick={() => handleRowClick(dish.id, el.department)}>
                                     <td>{dish.name}</td>
                                     <td>{(dish.cost * 100).toFixed(4).replace(/\.?0*$/, '')} %</td>
                                 </tr>

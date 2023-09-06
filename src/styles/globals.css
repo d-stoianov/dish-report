@@ -18,7 +18,7 @@ thead tr {
     @apply bg-blue-100 border font-bold text-left px-8 py-4;
 }
 
-tbody {
+tbody tr {
     @apply hover:bg-gray-100;
 }
 

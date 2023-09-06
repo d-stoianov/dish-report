@@ -1,23 +1,22 @@
-import React from "react"
-import Accordion from "@/components/Accordion"
+import React, { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { BiSolidChevronLeft } from "react-icons/bi"
 import { motion } from "framer-motion"
+import DishReportService from "@/services/DishReportService"
 
-const DishDetails = ({ dishesDetails }) => {
-    const { id } = useParams()
-
-    const title = dishesDetails.length && dishesDetails.find(dishDetails => {
-        return dishDetails.id == id
-    }).name
-
-    const ingredients = dishesDetails.length && dishesDetails.find(dishDetails => {
-        return dishDetails.id == id
-    }).ingredients
+const DishDetails = ({ selectedDish }) => {
+    const { department, id } = useParams()
+    const service = new DishReportService()
+    const [dishDetails, setDishDetails] = useState([{}])
+    useEffect(() => {
+        service.getDishDetails(department, id)
+        .then(res => setDishDetails(res))
+        .catch(err => console.log(err))
+    }, [])
 
     return (
         <motion.div 
-            className="m-4"
+            className="p-4 flex flex-col w-full justify-center items-center gap-4"
 
             initial={{opacity: 0}}
             animate={{opacity: 1}}
@@ -28,36 +27,25 @@ const DishDetails = ({ dishesDetails }) => {
                     <BiSolidChevronLeft />
                 </Link>
                 <h1 className="text-xl font-semibold">
-                    {title}
+                    {selectedDish.name}
                 </h1>
             </div>
-            {   
-                ingredients && ingredients.map(ingredient => {
-                    return (
-                        <Accordion
-                            title={ingredient.name}
-                            key={ingredient.name}
-                        >
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <td>City</td>
-                                        <td>Price</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {ingredient.costs.map(el => (
-                                        <tr key={el.place}>
-                                            <td>{el.place}</td>
-                                            <td>{el.cost} %</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </Accordion>
-                    )
-                })
-            }
+                <table className="w-full md:w-[70%]">
+                    <thead>
+                        <tr>
+                            <td>Ingredient</td>
+                            <td>Cost</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {dishDetails.map((ingredient, idx) => (
+                            <tr key={idx}>
+                                <td>{ingredient.name}</td>
+                                <td>?</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
         </motion.div>
     )
 }

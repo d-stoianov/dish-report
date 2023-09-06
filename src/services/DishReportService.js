@@ -1,6 +1,6 @@
 import config from "@/services/service.config.json"
 import sha1 from "sha1"
-import { KeyCollection, Key } from "@/services/KeyService"
+import { KeyService, KeyCollection, Key } from "@/services/KeyService"
 
 class OverviewReport {
     constructor(items, errors) {
@@ -12,6 +12,11 @@ class OverviewReport {
        return this.items.some(i => {
             return i.hasData
         })
+    }
+
+    getDishById(id) {
+        return this.items.flatMap(section => section.dishes)
+        .find(dish => dish.id == id)
     }
 }
 
@@ -151,8 +156,44 @@ class DishReportService {
             }
         }
         const result = new OverviewReport(items)
-        console.log(result)
         return result
+    }
+
+    async getDishDetails(department, productId) {
+        const departmentUrl = config.find(el => el.department == department).baseUrl
+        const key = new KeyService().loadKeys().keys.find(el => el.department == department).value
+
+        const currentTime = new Date()
+        const date = new Date(currentTime.getTime() - 7 * 24 * 60 * 60 * 1000) // last week
+        const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
+
+        let productIds = []
+
+        try {
+            const response = await fetch(`${departmentUrl}/v2/assemblyCharts/getPrepared?date=${dateString}&productId=${productId}&key=${key}`)
+
+            const data = await response.json()
+            productIds = data.preparedCharts[0].items.map(el => el.productId)
+        } catch (error) {
+            console.log(error)
+            return
+        }
+
+        let productIdsUrl = ""
+        for (let i = 0; i < productIds.length; i++) {
+            productIdsUrl += `&ids=${productIds[i]}`
+        }
+
+        try {
+            const response = await fetch(`${departmentUrl}/v2/entities/products/list?key=${key}${productIdsUrl}`)
+
+            const data = await response.json()
+            return data
+        } catch (error) {
+            console.log(error)
+            return
+        }
+        
     }
 }
 
