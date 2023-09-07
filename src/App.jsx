@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import DishReportService from "@/services/DishReportService"
 import { KeyService } from "@/services/KeyService"
-import DishesOveviewList from "@/pages/DishesOveviewList"
+import DishesOverviewList from "@/pages/DishesOverviewList"
 import DishDetails from "@/pages/DishDetails"
 import Login from "@/pages/Login"
 import Logout from "@/components/Logout"
@@ -71,7 +71,7 @@ const App = () => {
                         element={
                             <ProtectedRoute redirectPath="/">
                                 <Logout handleUserLogout={handleLogout} />
-                                <DishesOveviewList handleRowClick={handleRowClick} isLoading={isLoading} dishesOverview={dishesOverview.items} />
+                                <DishesOverviewList handleRowClick={handleRowClick} isLoading={isLoading} dishesOverview={dishesOverview.items} />
                             </ProtectedRoute>
                         } 
                     />
