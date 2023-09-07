@@ -35,7 +35,7 @@ const DishDetails = ({ selectedDish }) => {
                         <BiSolidChevronLeft />
                     </Link>
                     <h1 className="text-xl font-semibold">
-                        {selectedDish}
+                        {selectedDish ? selectedDish.name : ""}
                     </h1>
                 </div>
                     <table className="w-full md:w-[70%]">
